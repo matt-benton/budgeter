@@ -11,3 +11,14 @@ createInertiaApp({
             .mount(el)
     },
 })
+
+// Include CSS file
+require('halfmoon/css/halfmoon-variables.min.css')
+/*
+  Or,
+  Include the following (no variables, supports IE11):
+  require("halfmoon/css/halfmoon.min.css");
+*/
+
+// Import JS library
+const halfmoon = require('halfmoon')
