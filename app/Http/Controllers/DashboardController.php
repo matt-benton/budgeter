@@ -8,9 +8,20 @@ use App\Models\Expense;
 
 class DashboardController extends Controller
 {
-    public function showDashboard()
+    public function showDashboard(Request $request)
     {
-        $expenses = Expense::orderBy('date')->with('category')->get();
+        $startDate = $request->query('start');
+        $endDate = $request->query('end');
+
+        $expenseQuery = Expense::orderBy('date')
+            ->with('category');
+
+        if ($startDate && $endDate) {
+            $expenseQuery = $expenseQuery->whereBetween('date', [$startDate, $endDate]);
+        }
+
+        $expenses = $expenseQuery->get();
+
         $categories = Category::orderBy('name')->get();
 
         return inertia('Dashboard', [
