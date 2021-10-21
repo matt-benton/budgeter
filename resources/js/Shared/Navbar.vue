@@ -5,6 +5,9 @@
             <li class="nav-item" :class="{ active: path === '/categories' }">
                 <Link href="/categories" class="nav-link">Categories</Link>
             </li>
+            <li class="nav-item" :class="{ active: path === '/expenses/create' }">
+                <Link href="/expenses/create" class="nav-link">Add Expenses</Link>
+            </li>
         </ul>
     </nav>
 </template>
