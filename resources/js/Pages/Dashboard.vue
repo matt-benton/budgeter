@@ -131,7 +131,7 @@ export default {
             return expenses.reduce((acc, currentExpense) => acc + currentExpense.amount, 0)
         },
         formatAmount(amount) {
-            return amount / 100
+            return (amount / 100).toFixed(2)
         },
         formatDate(date) {
             return format(new Date(`${date} 00:00:00`), 'MMM do')
