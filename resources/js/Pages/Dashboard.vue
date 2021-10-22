@@ -8,29 +8,7 @@
             </div>
             <div v-if="expenses.length > 0">
                 <h3 class="font-size-22">Categories</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th class="text-right">Percent</th>
-                            <th class="text-right">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="cat in displayedCategories">
-                            <td>{{ cat.name }}</td>
-                            <td class="text-right">{{ getCategoryPercent(cat.id) }}%</td>
-                            <td class="text-right">{{ formatAmount(getCategoryTotal(cat.id)) }}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td class="text-right">
-                                <b>{{ formatAmount(allExpensesTotal) }}</b>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <CategoryTable :categories="categories" :expenses="expenses" />
                 <h3 class="font-size-22">Expenses</h3>
                 <table class="table table-striped">
                     <thead>
@@ -68,16 +46,16 @@
 
 <script>
 import Layout from '../Shared/Layout.vue'
+import CategoryTable from './categories/CategoryTable.vue'
 import { format, addMonths, subMonths, startOfMonth, endOfMonth } from 'date-fns'
 import { Link } from '@inertiajs/inertia-vue3'
+import formatMixin from '../Mixins/formatMixin'
+import expenseMixin from '../Mixins/expenseMixin'
 
 export default {
     computed: {
         allExpensesTotal() {
             return this.sumExpenses(this.expenses)
-        },
-        displayedCategories() {
-            return this.categories.filter(cat => this.getCategoryTotal(cat.id) > 0)
         },
         startDate() {
             let params = new URLSearchParams(window.location.search)
@@ -119,27 +97,15 @@ export default {
         },
     },
     methods: {
-        getCategoryTotal(categoryId) {
-            return this.sumExpenses(this.expenses.filter(exp => exp.category_id === categoryId))
-        },
-        getCategoryPercent(categoryId) {
-            let categoryTotal = this.getCategoryTotal(categoryId)
-
-            return Math.round((categoryTotal / this.allExpensesTotal) * 100)
-        },
-        sumExpenses(expenses) {
-            return expenses.reduce((acc, currentExpense) => acc + currentExpense.amount, 0)
-        },
-        formatAmount(amount) {
-            return (amount / 100).toFixed(2)
-        },
         formatDate(date) {
             return format(new Date(`${date} 00:00:00`), 'MMM do')
         },
     },
+    mixins: [formatMixin, expenseMixin],
     components: {
         Layout,
         Link,
+        CategoryTable,
     },
     props: ['expenses', 'categories'],
 }
