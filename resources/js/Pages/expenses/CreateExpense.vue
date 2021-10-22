@@ -7,12 +7,23 @@
                     <div class="form-group">
                         <label for="amount">Amount</label>
                         <input
-                            type="number"
+                            type="text"
                             class="form-control"
                             id="amount"
                             v-model="form.amount"
                             step="0.01"
+                            @keydown="onAmountEvent"
                         />
+                        <ul id="expense-search-results" v-show="searchedExpenses.length > 0">
+                            <li
+                                v-for="exp in searchedExpenses"
+                                @click="onExpenseClicked(exp)"
+                                :class="{ selected: expenseIsSelected(exp) }"
+                            >
+                                <span>{{ exp.amount }}</span
+                                ><span>{{ exp.name }}</span>
+                            </li>
+                        </ul>
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -42,6 +53,12 @@ import Layout from '../../Shared/Layout.vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 
 export default {
+    data() {
+        return {
+            timeout: null,
+            searchedExpenses: [],
+        }
+    },
     setup() {
         const form = useForm({
             amount: null,
@@ -57,6 +74,84 @@ export default {
             this.form.post('/expenses')
             this.form.reset()
         },
+        onAmountEvent(event) {
+            switch (event.key) {
+                case 'Tab':
+                    clearTimeout(this.timeout)
+                    this.searchedExpenses = []
+                    break
+                case 'ArrowDown':
+                    this.selectNextExpense()
+                    break
+                case 'ArrowUp':
+                    this.selectPrevExpense()
+                    break
+                case 'Escape':
+                    this.searchedExpenses = []
+                    break
+                default:
+                    this.searchExpensesAfterDelay()
+            }
+        },
+        onExpenseClicked(exp) {
+            this.form.amount = exp.amount / 100
+            this.form.name = exp.name
+            this.form.category_id = exp.category_id
+
+            this.searchedExpenses = []
+        },
+        async fetchExpenses() {
+            return await axios.get(`/expenses?search=${this.form.amount}`)
+        },
+        async searchExpenses() {
+            if (this.form.amount) {
+                let result = await this.fetchExpenses()
+                this.searchedExpenses = result.data.expenses
+            } else {
+                this.searchedExpenses = []
+            }
+        },
+        searchExpensesAfterDelay() {
+            clearTimeout(this.timeout)
+            this.timeout = setTimeout(this.searchExpenses, 500)
+        },
+        setExpense(exp) {
+            this.form.amount = exp.amount / 100
+            this.form.name = exp.name
+            this.form.category_id = exp.category_id
+        },
+        selectNextExpense() {
+            if (this.searchedExpenses.length > 0) {
+                let currentExpenseIndex = this.searchedExpenses.findIndex(
+                    exp => exp.name === this.form.name && this.form.amount * 100 === exp.amount,
+                )
+
+                if (
+                    currentExpenseIndex === -1 ||
+                    currentExpenseIndex >= this.searchedExpenses.length - 1
+                ) {
+                    this.setExpense(this.searchedExpenses[0])
+                } else {
+                    this.setExpense(this.searchedExpenses[currentExpenseIndex + 1])
+                }
+            }
+        },
+        selectPrevExpense() {
+            if (this.searchedExpenses.length > 0) {
+                let currentExpenseIndex = this.searchedExpenses.findIndex(
+                    exp => exp.name === this.form.name && this.form.amount * 100 === exp.amount,
+                )
+
+                if (currentExpenseIndex === -1 || currentExpenseIndex <= 0) {
+                    this.setExpense(this.searchedExpenses[this.searchedExpenses.length - 1])
+                } else {
+                    this.setExpense(this.searchedExpenses[currentExpenseIndex - 1])
+                }
+            }
+        },
+        expenseIsSelected(exp) {
+            return this.form.name === exp.name && this.form.amount * 100 === exp.amount
+        },
     },
     components: {
         Layout,
@@ -64,3 +159,28 @@ export default {
     props: ['categories'],
 }
 </script>
+
+<style scoped>
+#expense-search-results {
+    background-color: var(--dark-color-light);
+    list-style-type: none;
+    padding: 4px;
+}
+
+#expense-search-results > li {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--base-border-radius);
+}
+
+#expense-search-results > li:hover,
+.selected {
+    background-color: var(--dark-color-dark);
+}
+
+#expense-search-results > li:last-of-type {
+    margin-bottom: 0;
+}
+</style>

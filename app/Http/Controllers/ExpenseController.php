@@ -13,9 +13,21 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->query('search');
+
+        if ($search) {
+            $expenses = Expense::select('name', 'amount', 'category_id')
+                ->where('amount', 'like', "%{$search}%")
+                ->distinct()
+                ->take(10)
+                ->get();
+        } else {
+            $expenses = Expense::all();
+        }
+
+        return response()->json(['expenses' => $expenses]);
     }
 
     /**
