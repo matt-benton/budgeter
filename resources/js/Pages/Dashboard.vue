@@ -10,32 +10,7 @@
                 <h3 class="font-size-22">Categories</h3>
                 <CategoryTable :categories="categories" :expenses="expenses" />
                 <h3 class="font-size-22">Expenses</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Expense</th>
-                            <th>Category</th>
-                            <th class="text-right">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="exp in expenses">
-                            <td>{{ formatDate(exp.date) }}</td>
-                            <td>{{ exp.name }}</td>
-                            <td>{{ exp.category.name }}</td>
-                            <td class="text-right">{{ formatAmount(exp.amount) }}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-right">
-                                <b>{{ formatAmount(allExpensesTotal) }}</b>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <ExpenseTable :expenses="expenses" />
             </div>
             <div class="card" v-else>
                 <p>No expenses found within date range</p>
@@ -47,6 +22,7 @@
 <script>
 import Layout from '../Shared/Layout.vue'
 import CategoryTable from './categories/CategoryTable.vue'
+import ExpenseTable from './expenses/ExpenseTable.vue'
 import { format, addMonths, subMonths, startOfMonth, endOfMonth } from 'date-fns'
 import { Link } from '@inertiajs/inertia-vue3'
 import formatMixin from '../Mixins/formatMixin'
@@ -54,9 +30,6 @@ import expenseMixin from '../Mixins/expenseMixin'
 
 export default {
     computed: {
-        allExpensesTotal() {
-            return this.sumExpenses(this.expenses)
-        },
         startDate() {
             let params = new URLSearchParams(window.location.search)
             let start = params.get('start')
@@ -96,16 +69,12 @@ export default {
             return format(this.startDate, 'yyyy')
         },
     },
-    methods: {
-        formatDate(date) {
-            return format(new Date(`${date} 00:00:00`), 'MMM do')
-        },
-    },
     mixins: [formatMixin, expenseMixin],
     components: {
         Layout,
         Link,
         CategoryTable,
+        ExpenseTable,
     },
     props: ['expenses', 'categories'],
 }
