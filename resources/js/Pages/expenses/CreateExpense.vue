@@ -74,6 +74,7 @@ export default {
         submitForm() {
             this.form.post('/expenses')
             this.form.reset()
+            document.querySelector('#amount').focus()
         },
         onAmountEvent(event) {
             switch (event.key) {
