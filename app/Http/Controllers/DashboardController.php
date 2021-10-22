@@ -5,22 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Expense;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function showDashboard(Request $request)
     {
-        $startDate = $request->query('start');
-        $endDate = $request->query('end');
-
-        $expenseQuery = Expense::orderBy('date')
-            ->with('category');
-
-        if ($startDate && $endDate) {
-            $expenseQuery = $expenseQuery->whereBetween('date', [$startDate, $endDate]);
+        if ($request->query('start') && $request->query('end')) {
+            $startDate = $request->query('start');
+            $endDate = $request->query('end');
+        } else {
+            $now = Carbon::now();
+            $startDate = $now->startOfMonth()->toDateString();
+            $endDate = $now->endOfMonth()->toDateString();
         }
 
-        $expenses = $expenseQuery->get();
+        $expenses = Expense::orderBy('date')
+            ->with('category')
+            ->whereBetween('date', [$startDate, $endDate])
+            ->get();
 
         $categories = Category::orderBy('name')->get();
 
