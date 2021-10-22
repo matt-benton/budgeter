@@ -134,7 +134,7 @@ export default {
             return amount / 100
         },
         formatDate(date) {
-            return format(new Date(date), 'MMM do')
+            return format(new Date(`${date} 00:00:00`), 'MMM do')
         },
     },
     components: {
