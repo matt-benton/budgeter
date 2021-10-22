@@ -13,6 +13,7 @@
                             v-model="form.amount"
                             step="0.01"
                             @keydown="onAmountEvent"
+                            autocomplete="off"
                         />
                         <ul id="expense-search-results" v-show="searchedExpenses.length > 0">
                             <li

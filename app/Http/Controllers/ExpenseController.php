@@ -17,9 +17,12 @@ class ExpenseController extends Controller
     {
         $search = $request->query('search');
 
+        // remove any decimals because the amount is stored as an integer
+        $searchNoDecimals = str_replace('.', '', $search);
+
         if ($search) {
             $expenses = Expense::select('name', 'amount', 'category_id')
-                ->where('amount', 'like', "%{$search}%")
+                ->where('amount', 'like', "%{$searchNoDecimals}%")
                 ->distinct()
                 ->take(10)
                 ->get();
