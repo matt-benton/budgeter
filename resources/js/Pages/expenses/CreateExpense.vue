@@ -21,7 +21,7 @@
                                 @click="onExpenseClicked(exp)"
                                 :class="{ selected: expenseIsSelected(exp) }"
                             >
-                                <span>{{ exp.amount }}</span
+                                <span>{{ (exp.amount / 100).toFixed(2) }}</span
                                 ><span>{{ exp.name }}</span>
                             </li>
                         </ul>
