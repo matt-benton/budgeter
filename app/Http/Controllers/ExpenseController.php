@@ -100,7 +100,15 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $expense = Expense::findOrFail($id);
+
+        $expense->amount = $request->amount;
+        $expense->name = $request->name;
+        $expense->date = $request->date;
+        $expense->category_id = $request->category_id;
+        $expense->save();
+
+        return back();
     }
 
     /**
