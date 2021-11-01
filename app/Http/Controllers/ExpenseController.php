@@ -64,7 +64,11 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        //
+        return inertia('expenses/ShowExpense',
+            [
+                'expense' => Expense::where('id', $id)->with('category')->first()
+            ]
+        );
     }
 
     /**
@@ -75,7 +79,12 @@ class ExpenseController extends Controller
      */
     public function edit($id)
     {
-        //
+        return inertia('expenses/EditExpense',
+            [
+                'expense' => Expense::findOrFail($id),
+                'categories' => Category::all(),
+            ]
+        );
     }
 
     /**
@@ -98,6 +107,8 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Expense::destroy($id);
+
+        return redirect('/');
     }
 }

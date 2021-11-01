@@ -13,7 +13,9 @@
         <tbody>
             <tr v-for="exp in sortedExpenses">
                 <td>{{ formatDate(exp.date) }}</td>
-                <td>{{ exp.name }}</td>
+                <td>
+                    <Link :href="`/expenses/${exp.id}`">{{ exp.name }}</Link>
+                </td>
                 <td>{{ exp.category.name }}</td>
                 <td class="text-right">{{ formatAmount(exp.amount) }}</td>
             </tr>
@@ -33,6 +35,7 @@
 import formatMixin from '../../Mixins/formatMixin'
 import expenseMixin from '../../Mixins/expenseMixin'
 import { format, isBefore } from 'date-fns'
+import { Link } from '@inertiajs/inertia-vue3'
 
 export default {
     data() {
@@ -71,6 +74,9 @@ export default {
     },
     mixins: [formatMixin, expenseMixin],
     props: ['expenses'],
+    components: {
+        Link,
+    },
 }
 </script>
 
