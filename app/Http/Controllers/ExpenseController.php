@@ -64,9 +64,13 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
+        $expense = Expense::where('id', $id)->with('category')->first();
+        $similarExpenses = Expense::where('name', 'like', "%{$expense->name}%")->with('category')->get();
+
         return inertia('expenses/ShowExpense',
             [
-                'expense' => Expense::where('id', $id)->with('category')->first()
+                'expense' => $expense,
+                'similarExpenses' => $similarExpenses,
             ]
         );
     }
