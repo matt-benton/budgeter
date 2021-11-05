@@ -4,7 +4,7 @@
             <tr>
                 <th @click="sortBy = 'name'"><span class="click-text">Category</span></th>
                 <th @click="sortBy = 'three_month_avg'" class="text-right">
-                    <span class="click-text">3 Month Avg</span>
+                    <span class="click-text">Prev 3 Month Avg</span>
                 </th>
                 <th class="text-right" @click="sortBy = 'total'">
                     <span class="click-text">Total</span>

@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $categories = Category::orderBy('name')->get();
 
         foreach ($categories as $category) {
-            $category->three_month_avg = $category->getThreeMonthAvg($endDate);
+            $category->three_month_avg = $category->getThreeMonthAvg($endDate->subMonths(1));
         }
 
         return inertia('Dashboard', [

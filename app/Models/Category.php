@@ -18,10 +18,11 @@ class Category extends Model
 
     public function getThreeMonthAvg(CarbonImmutable $endDate)
     {
-        $startDate = $endDate->subMonths(3);
+        $rangeEnd = $endDate->endOfMonth();
+        $rangeStart = $endDate->subMonths(2)->startOfMonth();
 
         $sumOfExpenses = $this->expenses()
-            ->whereBetween('date', [$startDate, $endDate])
+            ->whereBetween('date', [$rangeStart, $rangeEnd])
             ->sum('amount');
 
         return floor($sumOfExpenses / 3);
