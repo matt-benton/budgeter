@@ -10,6 +10,11 @@ class BudgetCategoryAmount extends Model
 
     protected $fillable = ['budget_id', 'category_id', 'amount'];
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function setAmountAttribute($value)
     {
         $this->attributes['amount'] = $value * 100;

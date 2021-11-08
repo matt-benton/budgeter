@@ -62,7 +62,9 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        //
+        $budget = Budget::where('id', $id)->with('budgetCategoryAmounts.category')->first();
+
+        return inertia('budgets/ShowBudget')->with(['budget' => $budget]);
     }
 
     /**

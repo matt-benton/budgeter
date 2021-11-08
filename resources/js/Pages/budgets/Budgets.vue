@@ -5,7 +5,7 @@
             <Link href="/budgets/create">New Budget</Link>
             <div v-if="budgets.length > 0">
                 <div class="card" v-for="budget in budgets">
-                    {{ budget.name }}
+                    <Link :href="`/budgets/${budget.id}`">{{ budget.name }}</Link>
                 </div>
             </div>
             <div v-else>No budgets found.</div>
