@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div class="w-600 m-auto">
-            <h1>Categories</h1>
+            <h2>Categories</h2>
             <div class="card">
                 <form @submit.prevent="submitForm">
                     <div class="form-group">

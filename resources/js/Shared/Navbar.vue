@@ -5,10 +5,11 @@
             <li class="nav-item" :class="{ active: path === '/categories' }">
                 <Link href="/categories" class="nav-link">Categories</Link>
             </li>
-            <li class="nav-item" :class="{ active: path === '/expenses/create' }">
-                <Link href="/expenses/create" class="nav-link">Add Expenses</Link>
+            <li class="nav-item" :class="{ active: path === '/budgets' }">
+                <Link href="/budgets" class="nav-link">Budgets</Link>
             </li>
         </ul>
+        <Link href="/expenses/create" class="btn btn-primary ml-auto">Add Expenses</Link>
     </nav>
 </template>
 
