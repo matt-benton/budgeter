@@ -62,9 +62,20 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        $budget = Budget::where('id', $id)->with('budgetCategoryAmounts.category')->first();
+        $budgetCategoryAmounts = BudgetCategoryAmount::join('categories', 'categories.id', '=', 'budget_category_amounts.category_id')
+            ->join('budgets', 'budgets.id', '=', 'budget_category_amounts.budget_id')
+            ->select(
+                'categories.id as category_id',
+                'categories.name',
+                'budgets.name as budget_name',
+                'budget_category_amounts.amount',
+                'budget_category_amounts.budget_id',
+            )
+            ->having('budget_category_amounts.budget_id', $id)
+            ->orderBy('categories.name')
+            ->get();
 
-        return inertia('budgets/ShowBudget')->with(['budget' => $budget]);
+        return inertia('budgets/ShowBudget')->with(['budgetCategoryAmounts' => $budgetCategoryAmounts]);
     }
 
     /**
@@ -75,7 +86,9 @@ class BudgetController extends Controller
      */
     public function edit($id)
     {
-        //
+        $budget = Budget::where('id', $id)->with('budgetCategoryAmounts')->first();
+
+        return inertia('budgets/EditBudget')->with(['budget' => $budget, 'categories' => Category::orderBy('name')->get()]);
     }
 
     /**
@@ -87,7 +100,24 @@ class BudgetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $budget = Budget::findOrFail($id);
+        $budget->name = $request->input('name');
+        $budget->save();
+
+        foreach ($request->input('budget_category_amounts') as $amount) {
+            if ($amount['amount']) {
+                BudgetCategoryAmount::updateOrCreate(
+                    ['budget_id' => $budget->id, 'category_id' => $amount['category_id']],
+                    ['amount' => $amount['amount']]
+                );
+            } else {
+                BudgetCategoryAmount::where('budget_id', $budget->id)
+                    ->where('category_id', $amount['category_id'])
+                    ->delete();
+            }
+        }
+
+        return redirect("/budgets/{$budget->id}");
     }
 
     /**
