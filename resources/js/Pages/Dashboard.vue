@@ -8,7 +8,7 @@
             </div>
             <div v-if="expenses.length > 0">
                 <h3 class="font-size-22">Categories</h3>
-                <CategoryTable :categories="categories" :expenses="expenses" />
+                <CategoryTable :categories="categories" :expenses="expenses" :budgets="budgets" />
                 <h3 class="font-size-22">Expenses</h3>
                 <ExpenseTable :expenses="expenses" />
             </div>
@@ -76,6 +76,6 @@ export default {
         CategoryTable,
         ExpenseTable,
     },
-    props: ['expenses', 'categories'],
+    props: ['expenses', 'categories', 'budgets'],
 }
 </script>

@@ -1,36 +1,68 @@
 <template>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th @click="sortBy = 'name'"><span class="click-text">Category</span></th>
-                <th @click="sortBy = 'three_month_avg'" class="text-right">
-                    <span class="click-text">Prev 3 Month Avg</span>
-                </th>
-                <th class="text-right" @click="sortBy = 'total'">
-                    <span class="click-text">Total</span>
-                </th>
-                <th class="text-right" @click="sortBy = 'percent'">
-                    <span class="click-text">Percent</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="cat in table">
-                <td>{{ cat.name }}</td>
-                <td class="text-right">{{ formatAmount(cat.three_month_avg) }}</td>
-                <td class="text-right">{{ cat.total }}</td>
-                <td class="text-right">{{ cat.percent }}%</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="text-right">{{ formatAmount(threeMonthAvgTotal) }}</td>
-                <td class="text-right">
-                    <b>{{ formatAmount(allExpensesTotal) }}</b>
-                </td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card">
+        <form class="form-inline">
+            <div class="form-group w-300 ml-auto">
+                <label for="budget">Budget</label>
+                <select
+                    class="form-control"
+                    id="budget"
+                    v-model="selectedBudgetId"
+                    @change="saveSelectedBudgetId"
+                >
+                    <option v-for="bud in budgets" :value="bud.id">
+                        {{ bud.name }}
+                    </option>
+                </select>
+            </div>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th @click="sortBy = 'name'"><span class="click-text">Category</span></th>
+                    <th @click="sortBy = 'three_month_avg'" class="text-right">
+                        <span class="click-text">Prev 3 Month Avg</span>
+                    </th>
+                    <th class="text-right">Budget</th>
+                    <th class="text-right" @click="sortBy = 'total'">
+                        <span class="click-text">Total</span>
+                    </th>
+                    <th class="text-right" @click="sortBy = 'percent'">
+                        <span class="click-text">Percent</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="cat in table">
+                    <td>{{ cat.name }}</td>
+                    <td class="text-right">{{ formatAmount(cat.three_month_avg) }}</td>
+                    <td class="text-right">
+                        <div v-if="cat.budget_amount">
+                            {{ formatAmount(cat.budget_amount) }}
+                        </div>
+                    </td>
+                    <td
+                        class="text-right"
+                        :class="{
+                            'text-danger':
+                                cat.budget_amount && isOverBudget(cat.budget_amount, cat.total),
+                        }"
+                    >
+                        {{ formatAmount(cat.total) }}
+                    </td>
+                    <td class="text-right">{{ cat.percent }}%</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-right">{{ formatAmount(threeMonthAvgTotal) }}</td>
+                    <td></td>
+                    <td class="text-right">
+                        <b>{{ formatAmount(allExpensesTotal) }}</b>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -41,6 +73,9 @@ export default {
     data() {
         return {
             sortBy: 'name',
+            selectedBudgetId: localStorage.getItem('selectedBudgetId')
+                ? JSON.parse(localStorage.getItem('selectedBudgetId'))
+                : this.budgets[0].id,
         }
     },
     computed: {
@@ -59,7 +94,8 @@ export default {
                             name: cat.name,
                             three_month_avg: cat.three_month_avg,
                             percent: this.getCategoryPercent(cat.id),
-                            total: this.formatAmount(this.getCategoryTotal(cat.id)),
+                            total: this.getCategoryTotal(cat.id),
+                            budget_amount: this.getBudgetAmount(cat.id),
                         }
                     }),
             )
@@ -73,6 +109,14 @@ export default {
         },
         getCategoryTotal(categoryId) {
             return this.sumExpenses(this.expenses.filter(exp => exp.category_id === categoryId))
+        },
+        getBudgetAmount(categoryId) {
+            let selectedBudget = this.budgets.find(bud => bud.id === this.selectedBudgetId)
+            let budgetCategoryAmount = selectedBudget.budget_category_amounts.find(
+                bca => bca.category_id === categoryId,
+            )
+
+            return budgetCategoryAmount ? budgetCategoryAmount.amount : null
         },
         sortTable(categories) {
             switch (this.sortBy) {
@@ -88,8 +132,15 @@ export default {
                     return categories
             }
         },
+        isOverBudget(budgetAmount, spentAmount) {
+            let total = spentAmount - budgetAmount
+            return total > 0 ? total : null
+        },
+        saveSelectedBudgetId() {
+            localStorage.setItem('selectedBudgetId', this.selectedBudgetId)
+        },
     },
-    props: ['categories', 'expenses'],
+    props: ['categories', 'expenses', 'budgets'],
     mixins: [formatMixin, expenseMixin],
 }
 </script>

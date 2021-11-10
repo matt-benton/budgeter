@@ -1,34 +1,36 @@
 <template>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th @click="sortBy = 'date'"><span class="click-text">Date</span></th>
-                <th @click="sortBy = 'name'"><span class="click-text">Expense</span></th>
-                <th @click="sortBy = 'category'"><span class="click-text">Category</span></th>
-                <th @click="sortBy = 'amount'" class="text-right">
-                    <span class="click-text">Amount</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="exp in sortedExpenses">
-                <td>{{ formatDate(exp.date) }}</td>
-                <td>
-                    <Link :href="`/expenses/${exp.id}`">{{ exp.name }}</Link>
-                </td>
-                <td>{{ exp.category.name }}</td>
-                <td class="text-right">{{ formatAmount(exp.amount) }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="text-right">
-                    <b>{{ formatAmount(allExpensesTotal) }}</b>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th @click="sortBy = 'date'"><span class="click-text">Date</span></th>
+                    <th @click="sortBy = 'name'"><span class="click-text">Expense</span></th>
+                    <th @click="sortBy = 'category'"><span class="click-text">Category</span></th>
+                    <th @click="sortBy = 'amount'" class="text-right">
+                        <span class="click-text">Amount</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="exp in sortedExpenses">
+                    <td>{{ formatDate(exp.date) }}</td>
+                    <td>
+                        <Link :href="`/expenses/${exp.id}`">{{ exp.name }}</Link>
+                    </td>
+                    <td>{{ exp.category.name }}</td>
+                    <td class="text-right">{{ formatAmount(exp.amount) }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">
+                        <b>{{ formatAmount(allExpensesTotal) }}</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>

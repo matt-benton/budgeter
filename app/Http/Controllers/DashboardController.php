@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Budget;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Expense;
@@ -34,6 +35,7 @@ class DashboardController extends Controller
         return inertia('Dashboard', [
             'expenses' => $expenses,
             'categories' => $categories,
+            'budgets' => Budget::orderBy('name')->with('budgetCategoryAmounts')->get(),
         ]);
     }
 }
