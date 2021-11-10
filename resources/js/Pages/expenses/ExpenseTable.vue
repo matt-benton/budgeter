@@ -42,7 +42,9 @@ import { Link } from '@inertiajs/inertia-vue3'
 export default {
     data() {
         return {
-            sortBy: 'date',
+            sortBy: localStorage.getItem('budgeterExpenseTableSortBy')
+                ? JSON.parse(localStorage.getItem('budgeterExpenseTableSortBy'))
+                : 'name',
         }
     },
     computed: {
@@ -58,6 +60,8 @@ export default {
             return format(new Date(`${date} 00:00:00`), 'MMM do')
         },
         sortExpenses(expenses) {
+            this.saveSortBy()
+
             switch (this.sortBy) {
                 case 'date':
                     return expenses.sort((a, b) =>
@@ -72,6 +76,9 @@ export default {
                 default:
                     return expenses
             }
+        },
+        saveSortBy() {
+            localStorage.setItem('budgeterExpenseTableSortBy', JSON.stringify(this.sortBy))
         },
     },
     mixins: [formatMixin, expenseMixin],

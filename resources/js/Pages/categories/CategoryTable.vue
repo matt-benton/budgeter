@@ -74,7 +74,9 @@ import expenseMixin from '../../Mixins/expenseMixin'
 export default {
     data() {
         return {
-            sortBy: 'name',
+            sortBy: localStorage.getItem('budgeterCategoryTableSortBy')
+                ? JSON.parse(localStorage.getItem('budgeterCategoryTableSortBy'))
+                : 'name',
             selectedBudgetId: localStorage.getItem('selectedBudgetId')
                 ? JSON.parse(localStorage.getItem('selectedBudgetId'))
                 : this.budgets[0].id,
@@ -121,6 +123,8 @@ export default {
             return budgetCategoryAmount ? budgetCategoryAmount.amount : null
         },
         sortTable(categories) {
+            this.saveSortBy()
+
             switch (this.sortBy) {
                 case 'name':
                     return categories.sort((a, b) => a.name.localeCompare(b.name))
@@ -142,6 +146,9 @@ export default {
         },
         saveSelectedBudgetId() {
             localStorage.setItem('selectedBudgetId', this.selectedBudgetId)
+        },
+        saveSortBy() {
+            localStorage.setItem('budgeterCategoryTableSortBy', JSON.stringify(this.sortBy))
         },
     },
     props: ['categories', 'expenses', 'budgets'],
