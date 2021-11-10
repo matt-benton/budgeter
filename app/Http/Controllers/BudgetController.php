@@ -128,6 +128,8 @@ class BudgetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Budget::destroy($id);
+
+        return redirect('/budgets');
     }
 }
