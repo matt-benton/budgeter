@@ -20,7 +20,7 @@
             </div>
             <div class="card" v-for="cat in categories">
                 <h2 class="card-title">
-                    <Link :href="`/categories/${cat.id}/edit`">{{ cat.name }}</Link>
+                    <Link :href="`/categories/${cat.id}`">{{ cat.name }}</Link>
                 </h2>
             </div>
         </div>

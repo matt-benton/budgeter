@@ -4,7 +4,10 @@
             <nav>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><Link href="/categories">Categories</Link></li>
-                    <li class="breadcrumb-item active">{{ category.name }}</li>
+                    <li class="breadcrumb-item">
+                        <Link :href="`/categories/${category.id}`">{{ category.name }}</Link>
+                    </li>
+                    <li class="breadcrumb-item active">Edit</li>
                 </ul>
             </nav>
             <div class="w-600 m-auto">

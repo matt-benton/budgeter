@@ -38,7 +38,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-
+        return inertia('categories/ShowCategory')->with(
+            ['category' => Category::where('id', $id)->with('expenses.category')->first()]
+        );
     }
 
     /**
