@@ -15,15 +15,23 @@
                     <thead>
                         <tr>
                             <th>Category</th>
-                            <th>Amount</th>
+                            <th class="text-right">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="amount in budgetCategoryAmounts">
                             <td>{{ amount.name }}</td>
-                            <td>{{ formatAmount(amount.amount) }}</td>
+                            <td class="text-right">{{ formatAmount(amount.amount) }}</td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td class="text-right">
+                                <b>{{ formatAmount(budgetTotal) }}</b>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
                 <div class="text-right">
                     <Link
@@ -43,6 +51,11 @@ import { Link } from '@inertiajs/inertia-vue3'
 import formatMixin from '../../Mixins/formatMixin'
 
 export default {
+    computed: {
+        budgetTotal() {
+            return this.budgetCategoryAmounts.reduce((acc, current) => acc + current.amount, 0)
+        },
+    },
     props: ['budgetCategoryAmounts'],
     components: {
         Layout,
