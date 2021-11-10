@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <div class="w-600 m-auto">
+        <div class="w-600 m-auto" @keydown.alt.shift="onKeydown">
             <h2>Create Expense</h2>
             <div class="card">
                 <form @submit.prevent="submitForm">
@@ -45,6 +45,7 @@
                     <input type="submit" class="btn btn-primary" value="Add Expense" />
                 </form>
             </div>
+            <p class="text-muted"><kbd>alt</kbd> + <kbd>shift</kbd> to set date to today</p>
         </div>
     </Layout>
 </template>
@@ -52,6 +53,7 @@
 <script>
 import Layout from '../../Shared/Layout.vue'
 import { useForm } from '@inertiajs/inertia-vue3'
+import { format } from 'date-fns'
 
 export default {
     data() {
@@ -153,6 +155,9 @@ export default {
         },
         expenseIsSelected(exp) {
             return this.form.name === exp.name && this.form.amount * 100 === exp.amount
+        },
+        onKeydown() {
+            this.form.date = format(new Date(), 'yyyy-MM-dd')
         },
     },
     components: {
