@@ -22,7 +22,9 @@
                     <th @click="sortBy = 'three_month_avg'" class="text-right">
                         <span class="click-text">Prev 3 Month Avg</span>
                     </th>
-                    <th class="text-right">Budget</th>
+                    <th class="text-right" @click="sortBy = 'budget'">
+                        <span class="click-text">Budget</span>
+                    </th>
                     <th class="text-right" @click="sortBy = 'total'">
                         <span class="click-text">Total</span>
                     </th>
@@ -36,9 +38,9 @@
                     <td>{{ cat.name }}</td>
                     <td class="text-right">{{ formatAmount(cat.three_month_avg) }}</td>
                     <td class="text-right">
-                        <div v-if="cat.budget_amount">
+                        <span v-if="cat.budget_amount">
                             {{ formatAmount(cat.budget_amount) }}
-                        </div>
+                        </span>
                     </td>
                     <td
                         class="text-right"
@@ -128,6 +130,8 @@ export default {
                     return categories.sort((a, b) => b.total - a.total)
                 case 'three_month_avg':
                     return categories.sort((a, b) => b.three_month_avg - a.three_month_avg)
+                case 'budget':
+                    return categories.sort((a, b) => b.budget_amount - a.budget_amount)
                 default:
                     return categories
             }
