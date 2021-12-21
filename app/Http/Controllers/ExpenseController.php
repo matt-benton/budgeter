@@ -86,7 +86,7 @@ class ExpenseController extends Controller
         return inertia('expenses/EditExpense',
             [
                 'expense' => Expense::findOrFail($id),
-                'categories' => Category::all(),
+                'categories' => Category::orderBy('name')->get(),
             ]
         );
     }
