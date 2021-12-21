@@ -40,7 +40,18 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        return inertia('expenses/CreateExpense')->with(['categories' => Category::orderBy('name')->get()]);
+        $recentExpenses = Expense::orderBy('date', 'desc')
+            ->with('category')
+            ->take(10)
+            ->get();
+
+        return inertia('expenses/CreateExpense')
+            ->with(
+                [
+                    'categories' => Category::orderBy('name')->get(),
+                    'recentExpenses' => $recentExpenses,
+                ]
+            );
     }
 
     /**

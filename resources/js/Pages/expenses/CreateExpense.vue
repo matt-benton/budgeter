@@ -47,11 +47,15 @@
             </div>
             <p class="text-muted"><kbd>alt</kbd> + <kbd>shift</kbd> to set date to today</p>
         </div>
+        <hr />
+        <h5>Recent Expenses</h5>
+        <ExpenseTable :expenses="recentExpenses" />
     </Layout>
 </template>
 
 <script>
 import Layout from '../../Shared/Layout.vue'
+import ExpenseTable from './ExpenseTable.vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import { format } from 'date-fns'
 
@@ -162,8 +166,9 @@ export default {
     },
     components: {
         Layout,
+        ExpenseTable,
     },
-    props: ['categories'],
+    props: ['categories', 'recentExpenses'],
 }
 </script>
 
