@@ -92,7 +92,7 @@ export default {
         table() {
             return this.sortTable(
                 this.categories
-                    .filter(cat => cat.three_month_avg > 0)
+                    .filter(cat => cat.three_month_avg > 0 || this.hasExpenses(cat))
                     .map(cat => {
                         return {
                             name: cat.name,
@@ -149,6 +149,9 @@ export default {
         },
         saveSortBy() {
             localStorage.setItem('budgeterCategoryTableSortBy', JSON.stringify(this.sortBy))
+        },
+        hasExpenses(category) {
+            return this.expenses.find(exp => exp.category_id === category.id)
         },
     },
     props: ['categories', 'expenses', 'budgets'],
