@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,4 @@ Route::get('/', [DashboardController::class, 'showDashboard']);
 Route::resource('categories', CategoryController::class);
 Route::resource('expenses', ExpenseController::class);
 Route::resource('budgets', BudgetController::class);
+Route::resource('vendors', VendorController::class);

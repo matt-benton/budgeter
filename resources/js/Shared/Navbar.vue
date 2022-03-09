@@ -8,6 +8,9 @@
             <li class="nav-item" :class="{ active: path === '/budgets' }">
                 <Link href="/budgets" class="nav-link">Budgets</Link>
             </li>
+            <li class="nav-item" :class="{ active: path === '/vendors' }">
+                <Link href="/vendors" class="nav-link">Vendors</Link>
+            </li>
         </ul>
         <Link href="/expenses/create" class="btn btn-primary ml-auto">Add Expenses</Link>
     </nav>
