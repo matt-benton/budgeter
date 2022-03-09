@@ -9,4 +9,9 @@ class Vendor extends Model
 {
     public $timestamps = false;
     protected $fillable = ['name'];
+
+    public function expenses()
+    {
+        return $this->hasMany('App\Models\Expense');
+    }
 }

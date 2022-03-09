@@ -38,7 +38,9 @@ class VendorController extends Controller
      */
     public function show($id)
     {
-        //
+        return inertia('vendors/ShowVendor')->with(
+            ['vendor' => Vendor::where('id', $id)->with('expenses.category')->first()]
+        );
     }
 
     /**
