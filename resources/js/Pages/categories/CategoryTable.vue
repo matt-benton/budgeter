@@ -87,7 +87,10 @@ export default {
             return this.sumExpenses(this.expenses)
         },
         threeMonthAvgTotal() {
-            return this.table.reduce((acc, currentRow) => acc + currentRow.three_month_avg, 0)
+            return this.table.reduce(
+                (acc, currentRow) => acc + parseInt(currentRow.three_month_avg),
+                0,
+            )
         },
         table() {
             return this.sortTable(
