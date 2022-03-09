@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Expense;
+use App\Models\Vendor;
 
 class ExpenseController extends Controller
 {
@@ -50,6 +51,7 @@ class ExpenseController extends Controller
                 [
                     'categories' => Category::orderBy('name')->get(),
                     'recentExpenses' => $recentExpenses,
+                    'vendors' => Vendor::orderBy('name')->get()
                 ]
             );
     }
@@ -75,7 +77,7 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        $expense = Expense::where('id', $id)->with('category')->first();
+        $expense = Expense::where('id', $id)->with(['category', 'vendor'])->first();
         $similarExpenses = Expense::where('name', 'like', "%{$expense->name}%")->with('category')->get();
 
         return inertia('expenses/ShowExpense',
@@ -98,6 +100,7 @@ class ExpenseController extends Controller
             [
                 'expense' => Expense::findOrFail($id),
                 'categories' => Category::orderBy('name')->get(),
+                'vendors' => Vendor::orderBy('name')->get(),
             ]
         );
     }
@@ -117,6 +120,7 @@ class ExpenseController extends Controller
         $expense->name = $request->name;
         $expense->date = $request->date;
         $expense->category_id = $request->category_id;
+        $expense->vendor_id = $request->vendor_id;
         $expense->save();
 
         return back();

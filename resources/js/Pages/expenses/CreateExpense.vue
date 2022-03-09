@@ -42,6 +42,14 @@
                             </option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="vendor">Vendor</label>
+                        <select class="form-control" id="vendor" v-model="form.vendor_id">
+                            <option v-for="vendor in vendors" :value="vendor.id">
+                                {{ vendor.name }}
+                            </option>
+                        </select>
+                    </div>
                     <input type="submit" class="btn btn-primary" value="Add Expense" />
                 </form>
             </div>
@@ -72,6 +80,7 @@ export default {
             name: null,
             date: null,
             category_id: null,
+            vendor_id: null,
         })
 
         return { form }
@@ -168,7 +177,7 @@ export default {
         Layout,
         ExpenseTable,
     },
-    props: ['categories', 'recentExpenses'],
+    props: ['categories', 'recentExpenses', 'vendors'],
 }
 </script>
 

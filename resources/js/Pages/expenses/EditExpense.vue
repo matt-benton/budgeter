@@ -38,6 +38,14 @@
                             </option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="vendor">Vendor</label>
+                        <select class="form-control" id="vendor" v-model="editForm.vendor_id">
+                            <option v-for="vendor in vendors" :value="vendor.id">
+                                {{ vendor.name }}
+                            </option>
+                        </select>
+                    </div>
                     <input type="submit" class="btn btn-primary" value="Save" />
                 </form>
             </div>
@@ -78,6 +86,7 @@ export default {
             name: props.expense.name,
             date: props.expense.date,
             category_id: props.expense.category_id,
+            vendor_id: props.expense.vendor_id,
         })
 
         return { deleteForm, editForm }
@@ -93,6 +102,6 @@ export default {
         Layout,
         Link,
     },
-    props: ['expense', 'categories'],
+    props: ['expense', 'categories', 'vendors'],
 }
 </script>

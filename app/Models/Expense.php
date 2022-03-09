@@ -12,6 +12,7 @@ class Expense extends Model
         'amount',
         'name',
         'category_id',
+        'vendor_id',
         'date',
     ];
 
@@ -23,5 +24,10 @@ class Expense extends Model
     public function category()
     {
         return $this->belongsTo('App\Models\Category');
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo('App\Models\Vendor');
     }
 }

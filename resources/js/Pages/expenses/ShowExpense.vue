@@ -4,7 +4,10 @@
             <h2>{{ expense.name }}</h2>
             <h3>${{ formatAmount(expense.amount) }}</h3>
             <h4 class="text-muted">{{ expense.category.name }}</h4>
-            <h4>{{ formatDate(expense.date) }}</h4>
+            <h4 class="text-muted">
+                {{ formatDate(expense.date) }}
+                <span v-if="expense.vendor">from {{ expense.vendor.name }}</span>
+            </h4>
             <Link :href="`/expenses/${expense.id}/edit`">Edit Expense</Link>
         </div>
         <div class="card">
