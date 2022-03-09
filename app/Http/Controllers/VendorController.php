@@ -51,7 +51,7 @@ class VendorController extends Controller
      */
     public function edit($id)
     {
-        //
+        return inertia('vendors/EditVendor')->with(['vendor' => Vendor::findOrFail($id)]);
     }
 
     /**
@@ -63,7 +63,11 @@ class VendorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $vendor = Vendor::findOrFail($id);
+        $vendor->name = $request->name;
+        $vendor->save();
+
+        return redirect("/vendors/{$id}/edit");
     }
 
     /**
