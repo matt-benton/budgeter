@@ -22,7 +22,7 @@ class ExpenseController extends Controller
         $searchNoDecimals = str_replace('.', '', $search);
 
         if ($search) {
-            $expenses = Expense::select('name', 'amount', 'category_id')
+            $expenses = Expense::select('name', 'amount', 'category_id', 'vendor_id')
                 ->where('amount', 'like', "%{$searchNoDecimals}%")
                 ->distinct()
                 ->take(10)

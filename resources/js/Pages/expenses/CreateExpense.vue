@@ -114,6 +114,7 @@ export default {
             this.form.amount = exp.amount / 100
             this.form.name = exp.name
             this.form.category_id = exp.category_id
+            this.form.vendor_id = exp.vendor_id
 
             this.searchedExpenses = []
         },
@@ -136,6 +137,7 @@ export default {
             this.form.amount = exp.amount / 100
             this.form.name = exp.name
             this.form.category_id = exp.category_id
+            this.form.vendor_id = exp.vendor_id
         },
         selectNextExpense() {
             if (this.searchedExpenses.length > 0) {
