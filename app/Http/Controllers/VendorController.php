@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vendor;
+use Illuminate\Support\Facades\DB;
 
 class VendorController extends Controller
 {
@@ -38,8 +39,21 @@ class VendorController extends Controller
      */
     public function show($id)
     {
+        $vendor = Vendor::where('id', $id)->with('expenses.category')->first();
+
+        $stats = $vendor->expenses()
+            ->select(DB::raw(
+                'count(*) as num_purchases,
+                round(avg(amount)) as avg_purchase_amount,
+                sum(amount) as total_amount_spent'
+            ))
+            ->first();
+
         return inertia('vendors/ShowVendor')->with(
-            ['vendor' => Vendor::where('id', $id)->with('expenses.category')->first()]
+            [
+                'vendor' => $vendor,
+                'stats' => $stats,
+            ]
         );
     }
 
