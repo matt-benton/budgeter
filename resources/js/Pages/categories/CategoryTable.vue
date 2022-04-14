@@ -88,7 +88,8 @@ export default {
         },
         threeMonthAvgTotal() {
             return this.table.reduce(
-                (acc, currentRow) => acc + parseInt(currentRow.three_month_avg),
+                (acc, currentRow) =>
+                    currentRow.three_month_avg ? acc + parseInt(currentRow.three_month_avg) : acc,
                 0,
             )
         },
