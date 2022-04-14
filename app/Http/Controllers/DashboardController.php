@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use App\Models\Expense;
+use App\Models\Category;
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -30,16 +30,15 @@ class DashboardController extends Controller
         $endOfLastMonth = $endDate->startOfMonth()->subMonth()->endOfMonth();
         $startOfThreeMonthsAgo = $endOfLastMonth->startOfMonth()->subMonths(2);
 
-        $categories = Expense::select(
-                'categories.id',
-                'categories.name',
-                DB::raw('round(sum(expenses.amount) / 3) as three_month_avg')
-            )
-            ->join('categories', 'expenses.category_id', '=', 'categories.id')
-            ->whereBetween('date', [$startOfThreeMonthsAgo->toDateString(), $endOfLastMonth->toDateString()])
-            ->groupBy('categories.id')
-            ->orderBy('categories.name')
-            ->get();
+        $categories = Category::select(['id', 'name'])
+            ->selectRaw("
+                (
+                    select round(sum(amount) / 3)
+                    from expenses
+                    where date between '{$startOfThreeMonthsAgo->toDateString()}' and '{$endOfLastMonth->toDateString()}'
+                    and expenses.category_id = categories.id
+                ) as three_month_avg"
+            )->get();
 
         return inertia('Dashboard', [
             'expenses' => $expenses,
