@@ -42,7 +42,7 @@ class BudgetController extends Controller
         $budget->save();
 
         foreach ($request->input('budget_category_amounts') as $amount) {
-            if ($amount['amount']) {
+            if (is_numeric($amount['amount'])) {
                 BudgetCategoryAmount::create([
                     'budget_id' => $budget->id,
                     'category_id' => $amount['category_id'],
@@ -105,7 +105,7 @@ class BudgetController extends Controller
         $budget->save();
 
         foreach ($request->input('budget_category_amounts') as $amount) {
-            if ($amount['amount']) {
+            if (is_numeric($amount['amount'])) {
                 BudgetCategoryAmount::updateOrCreate(
                     ['budget_id' => $budget->id, 'category_id' => $amount['category_id']],
                     ['amount' => $amount['amount']]
