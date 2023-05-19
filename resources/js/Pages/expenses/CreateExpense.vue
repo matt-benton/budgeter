@@ -65,7 +65,7 @@
 <script>
 import Layout from '../../Shared/Layout.vue'
 import ExpenseTable from './ExpenseTable.vue'
-import { useForm } from '@inertiajs/inertia-vue3'
+import { useForm } from '@inertiajs/vue3'
 import { format } from 'date-fns'
 
 export default {

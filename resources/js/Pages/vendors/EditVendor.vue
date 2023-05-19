@@ -35,7 +35,7 @@
 
 <script>
 import Layout from '../../Shared/Layout.vue'
-import { useForm, Link } from '@inertiajs/inertia-vue3'
+import { useForm, Link } from '@inertiajs/vue3'
 
 export default {
     setup(props) {

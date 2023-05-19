@@ -22,7 +22,7 @@ import Layout from '../../Shared/Layout.vue'
 import formatMixin from '../../Mixins/formatMixin'
 import ExpenseTable from './ExpenseTable.vue'
 import { format } from 'date-fns'
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 
 export default {
     methods: {

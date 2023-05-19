@@ -32,7 +32,7 @@
 <script>
 import Layout from '../../Shared/Layout.vue'
 import ExpenseTable from '../expenses/ExpenseTable.vue'
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 import formatMixin from '../../Mixins/formatMixin'
 
 export default {

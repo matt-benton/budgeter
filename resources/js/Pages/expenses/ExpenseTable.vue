@@ -37,7 +37,7 @@
 import formatMixin from '../../Mixins/formatMixin'
 import expenseMixin from '../../Mixins/expenseMixin'
 import { format, isBefore } from 'date-fns'
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 
 export default {
     data() {

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { useForm, Link } from '@inertiajs/inertia-vue3'
+import { useForm, Link } from '@inertiajs/vue3'
 import Layout from '../../Shared/Layout.vue'
 
 export default {

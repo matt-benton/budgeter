@@ -52,7 +52,7 @@
 
 <script>
 import Layout from '../../Shared/Layout.vue'
-import { useForm, Link } from '@inertiajs/inertia-vue3'
+import { useForm, Link } from '@inertiajs/vue3'
 
 export default {
     data() {
@@ -78,7 +78,7 @@ export default {
             budget_category_amounts,
         })
 
-        const deleteForm = useForm()
+        const deleteForm = useForm({})
 
         return { editForm, deleteForm }
     },

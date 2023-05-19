@@ -24,7 +24,7 @@ import Layout from '../Shared/Layout.vue'
 import CategoryTable from './categories/CategoryTable.vue'
 import ExpenseTable from './expenses/ExpenseTable.vue'
 import { format, addMonths, subMonths, startOfMonth, endOfMonth } from 'date-fns'
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 import formatMixin from '../Mixins/formatMixin'
 import expenseMixin from '../Mixins/expenseMixin'
 
