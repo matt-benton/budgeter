@@ -67,6 +67,7 @@ import Layout from '../../Shared/Layout.vue'
 import ExpenseTable from './ExpenseTable.vue'
 import { useForm } from '@inertiajs/vue3'
 import { format } from 'date-fns'
+import axios from 'axios'
 
 export default {
     data() {
