@@ -41,6 +41,7 @@
                     <div class="form-group">
                         <label for="vendor">Vendor</label>
                         <select class="form-control" id="vendor" v-model="editForm.vendor_id">
+                            <option value="">No Vendor</option>
                             <option v-for="vendor in vendors" :value="vendor.id">
                                 {{ vendor.name }}
                             </option>
