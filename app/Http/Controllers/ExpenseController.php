@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreExpenseRequest;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Expense;
@@ -62,9 +63,15 @@ class ExpenseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreExpenseRequest $request)
     {
-        Expense::create($request->all());
+        Expense::create([
+            'name' => $request->safe()->name,
+            'amount' => $request->safe()->amount,
+            'category_id' => $request->safe()->category_id,
+            'vendor_id' => $request->safe()->vendor_id,
+            'date' => $request->input('date'),
+        ]);
 
         return redirect('/expenses/create');
     }

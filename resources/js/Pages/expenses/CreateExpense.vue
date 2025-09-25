@@ -25,14 +25,17 @@
                                 ><span>{{ exp.name }}</span>
                             </li>
                         </ul>
+                        <p class="text-danger" v-if="form.errors.amount">{{ form.errors.amount }}</p>
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" v-model="form.name" />
+                        <p class="text-danger" v-if="form.errors.name">{{ form.errors.name }}</p>
                     </div>
                     <div class="form-group">
                         <label for="date">Date</label>
                         <input type="date" class="form-control" id="date" v-model="form.date" />
+                        <p class="text-danger" v-if="form.errors.date">{{ form.errors.date }}</p>
                     </div>
                     <div class="form-group">
                         <label for="category">Category</label>
@@ -41,6 +44,7 @@
                                 {{ category.name }}
                             </option>
                         </select>
+                        <p class="text-danger" v-if="form.errors.category_id">{{ form.errors.category_id }}</p>
                     </div>
                     <div class="form-group">
                         <label for="vendor">Vendor</label>
@@ -50,6 +54,13 @@
                                 {{ vendor.name }}
                             </option>
                         </select>
+                        <p class="text-danger" v-if="form.errors.vendor_id">{{ form.errors.vendor_id }}</p>
+                    </div>
+                    <div class="form-check" v-if="form.errors.date">
+                        <input class="form-check-input" type="checkbox" v-model="form.override" id="override-checkbox">
+                        <label class="form-check-label" for="override-checkbox">
+                            Override Validation
+                        </label>
                     </div>
                     <input type="submit" class="btn btn-primary" value="Add Expense" />
                 </form>
@@ -83,13 +94,18 @@ export default {
             date: null,
             category_id: null,
             vendor_id: null,
+            override: false,
         })
 
         return { form }
     },
     methods: {
         submitForm() {
-            this.form.post('/expenses')
+            this.form.post('/expenses', {
+                onSuccess: this.onFormSuccess,
+            })
+        },
+        onFormSuccess() {
             this.form.reset()
             document.querySelector('#amount').focus()
         },
