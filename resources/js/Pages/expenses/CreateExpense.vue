@@ -29,7 +29,13 @@
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" v-model="form.name" />
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            v-model="form.name"
+                            autocomplete="off"
+                        />
                         <p class="text-danger" v-if="form.errors.name">{{ form.errors.name }}</p>
                     </div>
                     <div class="form-group">
